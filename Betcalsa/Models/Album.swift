@@ -8,9 +8,10 @@
 
 import Foundation
 import Photos
+import UIKit
 
 class MyAwesomeAlbum: NSObject {
-    static let albumName = "Betcalsa"
+    static let albumName = "Free PDF Scanner"
     static let shared = MyAwesomeAlbum()
     
     private var assetCollection: PHAssetCollection!

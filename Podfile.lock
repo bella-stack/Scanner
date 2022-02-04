@@ -7,7 +7,7 @@ DEPENDENCIES:
   - WeScan (~> 1.0.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - PDFGenerator
     - WeScan
 
@@ -17,4 +17,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3e2597c3b47e5736c91c87daea96143be2735706
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.9.3
