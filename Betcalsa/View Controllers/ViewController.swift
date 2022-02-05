@@ -17,15 +17,17 @@ class ViewController: UIViewController {
     var documents = [URL]()
     var scannedImage: UIImage!
     var documentOrderNumber = 0
+    var scannedImageList = [UIImage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        scannedImageList = [UIImage]()
         view.backgroundColor = .white
         collectionView.backgroundColor = .white
         collectionView?.contentInset = UIEdgeInsets(top: 5, left: 10, bottom: 0, right: 10)
-        let scannerVC = ImageScannerController()
-        scannerVC.imageScannerDelegate = self
-        present(scannerVC, animated: true, completion: nil)
+//        let scannerVC = ImageScannerController()
+//        scannerVC.imageScannerDelegate = self
+//        present(scannerVC, animated: true, completion: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -205,11 +207,18 @@ extension ViewController: ImageScannerControllerDelegate {
         } else {
             scannedImage = results.scannedImage
         }
-        scanner.dismiss(animated: true, completion: nil)
-        var scannedImageList = [UIImage]()
-        scannedImageList.append(scannedImage);
-        scannedImageList.append(scannedImage);
-        showSaveDialog(scannedImageList: scannedImageList)
+        
+        scannedImageList.append(scannedImage)
+        
+        if (!results.isScanningNext)
+        {
+            scanner.dismiss(animated: true, completion: nil)
+            showSaveDialog(scannedImageList: scannedImageList)
+            scannedImageList = [UIImage]()
+        }
+        
+        
+        
     }
     
     func imageScannerControllerDidCancel(_ scanner: ImageScannerController) {

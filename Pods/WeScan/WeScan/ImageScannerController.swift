@@ -118,4 +118,5 @@ public struct ImageScannerResults {
     public var detectedRectangle: Quadrilateral
     
     public var scannedImageList: [UIImage]
+    public var isScanningNext: Bool
 }

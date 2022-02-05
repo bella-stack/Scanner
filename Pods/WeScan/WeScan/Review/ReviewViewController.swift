@@ -39,7 +39,16 @@ final class ReviewViewController: UIViewController {
         return button
     }()
     
-    private let results: ImageScannerResults
+    lazy private var nextScanButton: UIBarButtonItem = {
+        
+        let button = UIBarButtonItem(title: "Next Scan", style: .plain, target: self, action: #selector(nextScan))
+        button.tintColor = navigationController?.navigationBar.tintColor
+        return button
+    }()
+    
+    
+    
+    private var results: ImageScannerResults
     
     // MARK: - Life Cycle
     
@@ -61,8 +70,8 @@ final class ReviewViewController: UIViewController {
         setupToolbar()
         setupConstraints()
         
-        title = NSLocalizedString("wescan.review.title", tableName: nil, bundle: Bundle(for: ReviewViewController.self), value: "Review", comment: "The review title of the ReviewController")
-        navigationItem.rightBarButtonItem = doneButton
+        title = NSLocalizedString("wescan.review.title", tableName: nil, bundle: Bundle(for: ReviewViewController.self), value: "", comment: "The review title of the ReviewController")
+        navigationItem.rightBarButtonItems = [doneButton, nextScanButton]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -120,16 +129,25 @@ final class ReviewViewController: UIViewController {
         isCurrentlyDisplayingEnhancedImage.toggle()
     }
     
+    @objc private func nextScan() {
+        guard let imageScannerController = navigationController as? ImageScannerController else { return }
+        results.isScanningNext = true
+        results.doesUserPreferEnhancedImage = isCurrentlyDisplayingEnhancedImage
+        imageScannerController.imageScannerDelegate?.imageScannerController(imageScannerController, didFinishScanningWithResults: results)
+        
+        if let firstViewController = self.navigationController?.viewControllers.first {
+            self.navigationController?.popToViewController(firstViewController, animated: true)
+        }
+    }
+    
+    
+    
     @objc private func finishScan() {
         guard let imageScannerController = navigationController as? ImageScannerController else { return }
-        var newResults = results
-        newResults.scannedImage = results.scannedImage
-        newResults.scannedImageList = [UIImage]()
-        newResults.scannedImageList.append(results.scannedImage)
-        newResults.scannedImageList.append(results.scannedImage)
         
-        newResults.doesUserPreferEnhancedImage = isCurrentlyDisplayingEnhancedImage
-        imageScannerController.imageScannerDelegate?.imageScannerController(imageScannerController, didFinishScanningWithResults: newResults)
+        results.isScanningNext = false
+        results.doesUserPreferEnhancedImage = isCurrentlyDisplayingEnhancedImage
+        imageScannerController.imageScannerDelegate?.imageScannerController(imageScannerController, didFinishScanningWithResults: results)
     }
 
 }
