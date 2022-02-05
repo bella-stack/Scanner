@@ -159,8 +159,10 @@ final class EditScanViewController: UIViewController {
         }
         
         let finalImage = uiImage.withFixedOrientation()
+        var scannedImageList = [UIImage]()
+        scannedImageList.append(finalImage)
         
-        let results = ImageScannerResults(originalImage: image, scannedImage: finalImage, enhancedImage: enhancedImage, doesUserPreferEnhancedImage: false, detectedRectangle: scaledQuad)
+        let results = ImageScannerResults(originalImage: image, scannedImage: finalImage, enhancedImage: enhancedImage, doesUserPreferEnhancedImage: false, detectedRectangle: scaledQuad, scannedImageList: scannedImageList)
         let reviewViewController = ReviewViewController(results: results)
         
         navigationController?.pushViewController(reviewViewController, animated: true)

@@ -13,6 +13,7 @@ final class ReviewViewController: UIViewController {
     
     var enhancedImageIsAvailable = false
     var isCurrentlyDisplayingEnhancedImage = false
+    var scannedImageList = [UIImage]()
     
     lazy private var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -123,6 +124,10 @@ final class ReviewViewController: UIViewController {
         guard let imageScannerController = navigationController as? ImageScannerController else { return }
         var newResults = results
         newResults.scannedImage = results.scannedImage
+        newResults.scannedImageList = [UIImage]()
+        newResults.scannedImageList.append(results.scannedImage)
+        newResults.scannedImageList.append(results.scannedImage)
+        
         newResults.doesUserPreferEnhancedImage = isCurrentlyDisplayingEnhancedImage
         imageScannerController.imageScannerDelegate?.imageScannerController(imageScannerController, didFinishScanningWithResults: newResults)
     }

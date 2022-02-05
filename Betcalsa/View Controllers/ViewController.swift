@@ -9,6 +9,7 @@
 import UIKit
 import WeScan
 import PDFKit
+import PDFGenerator
 
 class ViewController: UIViewController {
 
@@ -94,6 +95,53 @@ class ViewController: UIViewController {
         //finally presenting the dialog box
         present(alertController, animated: true, completion: nil)
     }
+    
+    func showSaveDialog(scannedImageList: [UIImage]) {
+        let now = Utilities.getTime()
+        let alertController = UIAlertController(title: "Save Documents", message: "Enter document name", preferredStyle: .alert)
+        
+        //the confirm action taking the inputs
+        let confirmAction = UIAlertAction(title: "Save", style: .default) { (_) in
+            let name = alertController.textFields?[0].text
+            if name != "" {
+                if Utilities.checkSameName(fileName: name!, documents: self.documents) {
+                    self.generatePDF(scannedImageList: scannedImageList, pdfName: "\(name!) (1)")
+                } else {
+                    self.generatePDF(scannedImageList: scannedImageList, pdfName: "\(name!)")
+                }
+            } else {
+                self.generatePDF(scannedImageList: scannedImageList, pdfName: "\(now)")
+            }
+            self.documents = Utilities.getDocuments()
+            self.collectionView.reloadData()
+        }
+        
+        //the cancel action doing nothing
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        //adding textfields to our dialog box
+        alertController.addTextField { (textField) in
+            textField.placeholder = "\(now)"
+        }
+        
+        //adding the action to dialogbox
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        //finally presenting the dialog box
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func generatePDF(scannedImageList: [UIImage], pdfName: String) {
+        var docURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last! as URL
+        docURL = docURL.appendingPathComponent("\(pdfName).pdf")
+        
+        do {
+            try PDFGenerator.generate(scannedImageList.map { PDFPage.image($0) }, to: docURL, dpi: .dpi_300)
+        } catch (let e) {
+            print(e)
+        }
+    }
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -158,7 +206,10 @@ extension ViewController: ImageScannerControllerDelegate {
             scannedImage = results.scannedImage
         }
         scanner.dismiss(animated: true, completion: nil)
-        showSaveDialog(scannedImage: scannedImage)
+        var scannedImageList = [UIImage]()
+        scannedImageList.append(scannedImage);
+        scannedImageList.append(scannedImage);
+        showSaveDialog(scannedImageList: scannedImageList)
     }
     
     func imageScannerControllerDidCancel(_ scanner: ImageScannerController) {
