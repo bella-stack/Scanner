@@ -1,6 +1,7 @@
 # PDF Scanner
 
-Demo
+## Demo
+
 ![Alt text](https://github.com/bella-stack/Scanner/blob/main/demo.gif)
 
 
