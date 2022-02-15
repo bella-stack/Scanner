@@ -14,7 +14,7 @@ Built upon open various open source
 - Share documents
 
 ## Technologies
-* [Betcalsa] (https://github.com/emredurukn/betcalsa)
+* [Betcalsa](https://github.com/emredurukn/betcalsa)
 * [WeScan](https://github.com/WeTransfer/WeScan)
 * [PDFGenerator](https://github.com/sgr-ksmt/PDFGenerator)
 
