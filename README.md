@@ -1,4 +1,8 @@
-# Betcalsa
+# PDF Scanner
+
+![Alt text](https://github.com/bella-stack/Scanner/blob/main/pdfdemo.mp4)
+
+
 
 **Betcalsa trims, enhances, and makes documents readable.**
 
